@@ -10,11 +10,11 @@ interface GameProps {
 
 const GameCard = ({ game }: GameProps) => {
   return (
-    <Card borderRadius={10} overflow="hidden">
+    <Card width="250px" borderRadius={10} overflow="hidden">
       <Image
         src={gameCroppedImageUrl(game.background_image)}
         alt="game image"
-      />{" "}
+      />
       <CardBody>
         <Heading fontSize="2xl">{game.name}</Heading>
         <HStack justifyContent="space-between">
