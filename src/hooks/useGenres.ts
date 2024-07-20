@@ -8,52 +8,49 @@ export interface Platform {
   slug: string;
 }
 
-export interface Game {
+export interface Genre {
   id: number;
   name: string;
-  background_image: string;
-  parent_platforms: { platform: Platform }[];
-  metacritic: number;
 }
 
-export interface FetchGamesResponse {
+export interface FetchGenresResponse {
   count: number;
-  results: Game[];
+  results: Genre[];
 }
 
-const useGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
+const useGenres = () => {
+  const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const controller = new AbortController();
 
-    const fetchGames = async () => {
+    const fetchGenres = async () => {
       setLoading(true);
       setError("");
 
       try {
-        const response = await apiClient.get<FetchGamesResponse>("/games", {
+        const response = await apiClient.get<FetchGenresResponse>("/genres", {
           signal: controller.signal,
         });
-        setGames(response.data.results);
+        setGenres(response.data.results);
       } catch (err: any) {
         if (err instanceof CanceledError) {
           return;
         }
-        setError(err.message || "Something went wrong");
+        setError(err?.message || "Something went wrong");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchGames();
+    fetchGenres();
 
     return () => controller.abort();
   }, []);
 
-  return { games, loading, error };
+  return { genres, loading, error };
 };
 
-export default useGames;
+export default useGenres;
